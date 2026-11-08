@@ -1,0 +1,26 @@
+CONN	gh-climate-01-ec945ac8	gh-k7q2x9/greenhouse/gh-climate-01/status	1	1	{"v":1,"dev":"gh-climate-01","state":"offline","reason":"lwt"}
+SUB	gh-k7q2x9/greenhouse/gh-climate-01/cmd	1
+SUB	gh-k7q2x9/greenhouse/gh-climate-01/config	1
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/status	1	{"v":1,"dev":"gh-climate-01","type":"climate","fw":"1.0.0","state":"online","boot":3969145544,"up":0,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":1,"ts":1793736346456,"up":200,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"temperature_c":150.0,"light_lux":100000,"vent_open":1,"grow_light_on":0,"override":0}}
+STEP	normal	1000
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":2,"ts":1793736346456,"up":1000,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"temperature_c":25.0,"light_lux":100,"vent_open":0,"grow_light_on":1,"override":0}}
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":3,"ts":1793736346456,"up":6000,"buf":0,"drop":0,"mode":"auto","itv":5000,"rssi":-55,"m":{"temperature_c":25.0,"light_lux":100,"vent_open":0,"grow_light_on":1,"override":0}}
+STATE	servo	0
+STEP	hot	7000
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":4,"ts":1793736346456,"up":7000,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"temperature_c":37.9,"light_lux":100,"vent_open":1,"grow_light_on":1,"override":0}}
+STATE	servo	90
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":5,"ts":1793736346456,"up":9000,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"temperature_c":26.5,"light_lux":100,"vent_open":1,"grow_light_on":1,"override":0}}
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/status	1	{"v":1,"dev":"gh-climate-01","type":"climate","fw":"1.0.0","state":"online","boot":3969145544,"up":10000,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+STATE	servo	90
+STEP	cool	11000
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":6,"ts":1793736346456,"up":11000,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"temperature_c":13.0,"light_lux":100,"vent_open":0,"grow_light_on":1,"override":0}}
+STATE	servo	0
+STEP	dark	13000
+STATE	grow	1
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/cmd/ack	0	{"v":1,"dev":"gh-climate-01","cmd_id":"v1","status":"ok","reason":""}
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":7,"ts":1793736346456,"up":15000,"buf":0,"drop":0,"mode":"auto","itv":5000,"rssi":-55,"m":{"temperature_c":13.0,"light_lux":8,"vent_open":1,"grow_light_on":1,"override":1}}
+STATE	servo	90
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/status	1	{"v":1,"dev":"gh-climate-01","type":"climate","fw":"1.0.0","state":"online","boot":3969145544,"up":20000,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+PUB	gh-k7q2x9/greenhouse/gh-climate-01/telemetry	0	{"v":1,"dev":"gh-climate-01","type":"climate","boot":3969145544,"seq":8,"ts":1793736346456,"up":20000,"buf":0,"drop":0,"mode":"auto","itv":5000,"rssi":-55,"m":{"temperature_c":13.0,"light_lux":8,"vent_open":0,"grow_light_on":1,"override":0}}
+STATE	servo	0

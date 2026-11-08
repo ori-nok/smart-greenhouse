@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Умная теплица - панель управления</title>
+<style>
+  :root { --bg:#f6f8f5; --card:#fff; --fg:#1d2a1f; --muted:#667; --ok:#2e7d32; --warn:#ed8f00; --crit:#c62828; --line:#dde3dc; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141a15; --card:#1d261f; --fg:#e8efe8; --muted:#9aa89b; --line:#2c382e; } }
+  body { margin:0; font:15px/1.4 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { display:flex; gap:12px; align-items:center; padding:12px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  h1 { font-size:18px; margin:0 auto 0 0; }
+  input { padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); }
+  main { padding:16px; display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .card h2 { font-size:15px; margin:0 0 6px; display:flex; justify-content:space-between; }
+  .badge { font-size:12px; padding:2px 8px; border-radius:10px; color:#fff; }
+  .online { background:var(--ok); } .offline { background:var(--crit); } .unknown { background:var(--muted); }
+  table { width:100%; border-collapse:collapse; font-size:13px; } td, th { text-align:left; padding:3px 6px; border-bottom:1px solid var(--line); }
+  button { margin:4px 4px 0 0; padding:5px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; }
+  button:hover { border-color:var(--ok); }
+  .wide { grid-column:1 / -1; } .muted { color:var(--muted); font-size:12px; }
+  .warning { color:var(--warn); } .critical { color:var(--crit); font-weight:600; }
+  #msg { min-height:1.2em; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Умная теплица</h1>
+  <label>API-ключ <input id="key" type="password" placeholder="X-API-Key"></label>
+  <span id="msg" class="muted"></span>
+</header>
+<main id="devices"></main>
+<main><div class="card wide"><h2>События</h2><table><thead><tr><th>Время</th><th>Устройство</th><th>Уровень</th><th>Тип</th><th>Сообщение</th></tr></thead><tbody id="events"></tbody></table></div></main>
+<script>
+const CMDS = { soil:[["pump_on","Полив 20 с",{duration_s:20}],["pump_off","Стоп насос",{}]],
+  tank:[["buzzer_mute","Заглушить 60 с",{duration_s:60}]],
+  climate:[["vent_open","Открыть форточку",{duration_s:60}],["vent_close","Закрыть",{duration_s:60}],["light_on","Досветка вкл",{duration_s:60}],["light_off","Досветка выкл",{duration_s:60}]] };
+const keyInput = document.getElementById("key");
+try { keyInput.value = sessionStorage.getItem("gh_key") || ""; } catch (e) {}
+keyInput.addEventListener("input", () => { try { sessionStorage.setItem("gh_key", keyInput.value); } catch (e) {} refresh(); });
+const msg = t => { document.getElementById("msg").textContent = t; };
+async function api(path, opts = {}) {
+  const r = await fetch(path, { ...opts, headers: { "X-API-Key": keyInput.value, "Content-Type": "application/json" } });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body.detail || r.statusText);
+  return body;
+}
+function el(tag, props = {}, ...kids) { const e = Object.assign(document.createElement(tag), props); kids.forEach(k => e.append(k)); return e; }
+async function send(dev, cmd, args) {
+  try { const r = await api(`/api/v1/devices/${dev}/commands`, { method: "POST", body: JSON.stringify({ cmd, ...args }) }); msg(`Команда ${cmd} отправлена (${r.cmd_id})`); }
+  catch (e) { msg("Ошибка: " + e.message); }
+}
+async function refresh() {
+  try {
+    const devs = await api("/api/v1/devices");
+    const root = document.getElementById("devices"); root.replaceChildren();
+    for (const d of devs) {
+      const rows = Object.entries(d.latest || {}).map(([k, v]) => el("tr", {}, el("td", { textContent: k }), el("td", { textContent: String(v) })));
+      const card = el("div", { className: "card" },
+        el("h2", {}, el("span", { textContent: d.device_id }), el("span", { className: "badge " + d.state, textContent: d.state })),
+        el("div", { className: "muted", textContent: `${d.type} · fw ${d.fw || "?"} · режим ${d.mode} · cfg v${d.cfg_ver}/${d.cfg_acked}` + (d.locked_by_rule ? " · заблокирован правилом" : "") }),
+        el("table", {}, ...rows));
+      for (const [cmd, label, args] of CMDS[d.type] || []) card.append(el("button", { textContent: label, onclick: () => send(d.device_id, cmd, args) }));
+      root.append(card);
+    }
+    const ev = await api("/api/v1/events?limit=15");
+    const tb = document.getElementById("events"); tb.replaceChildren();
+    for (const e of ev) tb.append(el("tr", {}, el("td", { textContent: new Date(e.ts).toLocaleTimeString() }), el("td", { textContent: e.device_id || "-" }),
+      el("td", { className: e.severity, textContent: e.severity }), el("td", { textContent: e.type }), el("td", { textContent: e.message })));
+    if (document.getElementById("msg").textContent.startsWith("Ошибка")) msg("");  // ошибка устарела: запрос прошёл
+  } catch (e) { msg("Ошибка: " + e.message); }
+}
+refresh(); setInterval(refresh, 3000);
+</script>
+</body>
+</html>

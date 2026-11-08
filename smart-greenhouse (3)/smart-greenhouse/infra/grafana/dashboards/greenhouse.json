@@ -1,0 +1,296 @@
+{
+ "uid": "greenhouse-main",
+ "title": "Умная теплица",
+ "schemaVersion": 39,
+ "version": 1,
+ "refresh": "10s",
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "tags": [
+  "greenhouse"
+ ],
+ "panels": [
+  {
+   "id": 1,
+   "type": "timeseries",
+   "title": "Влажность почвы, %",
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "grafana-postgresql-datasource",
+    "uid": "tsdb"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percent",
+     "custom": {
+      "lineWidth": 1,
+      "spanNulls": true
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "format": "time_series",
+     "rawQuery": true,
+     "editorMode": "code",
+     "rawSql": "SELECT $__timeGroupAlias(ts, $__interval), avg((metrics->>'soil_moisture_pct')::float) AS \"влажность\" FROM telemetry WHERE $__timeFilter(ts) AND device_id='gh-soil-01' AND metrics ? 'soil_moisture_pct' GROUP BY 1 ORDER BY 1"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "type": "timeseries",
+   "title": "Состояние насоса (1 = включён)",
+   "gridPos": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "grafana-postgresql-datasource",
+    "uid": "tsdb"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "custom": {
+      "lineWidth": 1,
+      "spanNulls": true
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "format": "time_series",
+     "rawQuery": true,
+     "editorMode": "code",
+     "rawSql": "SELECT $__timeGroupAlias(ts, $__interval), max((metrics->>'pump_on')::float) AS \"насос\" FROM telemetry WHERE $__timeFilter(ts) AND device_id='gh-soil-01' AND metrics ? 'pump_on' GROUP BY 1 ORDER BY 1"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "type": "timeseries",
+   "title": "Уровень воды в баке, %",
+   "gridPos": {
+    "x": 0,
+    "y": 8,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "grafana-postgresql-datasource",
+    "uid": "tsdb"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percent",
+     "custom": {
+      "lineWidth": 1,
+      "spanNulls": true
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "format": "time_series",
+     "rawQuery": true,
+     "editorMode": "code",
+     "rawSql": "SELECT $__timeGroupAlias(ts, $__interval), avg((metrics->>'level_pct')::float) AS \"уровень\" FROM telemetry WHERE $__timeFilter(ts) AND device_id='gh-tank-01' AND (metrics->>'level_pct')::float >= 0 GROUP BY 1 ORDER BY 1"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "type": "timeseries",
+   "title": "Температура, °C",
+   "gridPos": {
+    "x": 12,
+    "y": 8,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "grafana-postgresql-datasource",
+    "uid": "tsdb"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "celsius",
+     "custom": {
+      "lineWidth": 1,
+      "spanNulls": true
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "format": "time_series",
+     "rawQuery": true,
+     "editorMode": "code",
+     "rawSql": "SELECT $__timeGroupAlias(ts, $__interval), avg((metrics->>'temperature_c')::float) AS \"температура\" FROM telemetry WHERE $__timeFilter(ts) AND device_id='gh-climate-01' AND metrics ? 'temperature_c' GROUP BY 1 ORDER BY 1"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "type": "timeseries",
+   "title": "Освещённость, lux",
+   "gridPos": {
+    "x": 0,
+    "y": 16,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "grafana-postgresql-datasource",
+    "uid": "tsdb"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "lux",
+     "custom": {
+      "lineWidth": 1,
+      "spanNulls": true
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "format": "time_series",
+     "rawQuery": true,
+     "editorMode": "code",
+     "rawSql": "SELECT $__timeGroupAlias(ts, $__interval), avg((metrics->>'light_lux')::float) AS \"lux\" FROM telemetry WHERE $__timeFilter(ts) AND device_id='gh-climate-01' AND metrics ? 'light_lux' GROUP BY 1 ORDER BY 1"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "type": "timeseries",
+   "title": "Устройства онлайн (1/0)",
+   "gridPos": {
+    "x": 12,
+    "y": 16,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "greenhouse_device_online",
+     "legendFormat": "{{device}}"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "type": "timeseries",
+   "title": "Сообщений телеметрии / мин",
+   "gridPos": {
+    "x": 0,
+    "y": 24,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (device) (rate(greenhouse_telemetry_total[5m])) * 60",
+     "legendFormat": "{{device}}"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "type": "timeseries",
+   "title": "Потеряно сообщений (по seq) за час",
+   "gridPos": {
+    "x": 12,
+    "y": 24,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (device) (increase(greenhouse_telemetry_lost_total[1h]))",
+     "legendFormat": "{{device}}"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "type": "timeseries",
+   "title": "События по типам за час",
+   "gridPos": {
+    "x": 0,
+    "y": 32,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (type, severity) (increase(greenhouse_events_total[1h]))",
+     "legendFormat": "{{severity}} {{type}}"
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "type": "timeseries",
+   "title": "Возраст последнего сообщения, с",
+   "gridPos": {
+    "x": 12,
+    "y": 32,
+    "w": 12,
+    "h": 8
+   },
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "greenhouse_device_last_seen_age_seconds",
+     "legendFormat": "{{device}}"
+    }
+   ]
+  }
+ ]
+}

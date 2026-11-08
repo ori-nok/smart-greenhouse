@@ -1,0 +1,49 @@
+ts,device_id,type,severity,message
+2026-10-30T00:00:01.000Z,gh-soil-01,device_registered,info,new soil device registered
+2026-10-30T00:00:01.000Z,gh-tank-01,device_registered,info,new tank device registered
+2026-10-30T00:00:01.000Z,gh-climate-01,device_registered,info,new climate device registered
+2026-10-30T00:01:00.000Z,gh-soil-01,config_changed,info,config v2 (operator): {'interval_ms': 60000}
+2026-10-30T00:01:00.000Z,gh-tank-01,config_changed,info,config v2 (operator): {'interval_ms': 60000}
+2026-10-30T00:01:00.000Z,gh-climate-01,config_changed,info,config v2 (operator): {'interval_ms': 60000}
+2026-10-30T11:30:20.000Z,gh-soil-01,anomaly,warning,soil_moisture_pct=31.5 deviates from trend (z=-4.5)
+2026-10-30T11:31:33.000Z,gh-soil-01,anomaly,warning,soil_moisture_pct=68.7 deviates from trend (z=+4.4)
+2026-10-30T20:00:00.000Z,gh-tank-01,sensor_fault,critical,HC-SR04: no echo (3 consecutive failures)
+2026-10-30T20:04:00.000Z,gh-tank-01,sensor_recovered,info,HC-SR04 echo restored
+2026-10-31T03:06:56.000Z,gh-tank-01,leak_suspected,critical,tank level falls 0.8 %/min while pumps are idle - possible leak
+2026-10-31T03:42:08.000Z,gh-tank-01,tank_state,warning,tank low
+2026-10-31T03:54:29.000Z,gh-tank-01,tank_state,critical,tank critical
+2026-10-31T03:54:41.000Z,gh-soil-01,config_changed,info,config v3 (rule:tank_lock): {'pump_enabled': 0}
+2026-10-31T03:54:41.000Z,gh-soil-01,pump_locked,critical,pump locked: tank level 10% <= 10%
+2026-10-31T05:10:00.000Z,gh-tank-01,tank_state,info,tank ok
+2026-10-31T05:10:00.000Z,gh-tank-01,anomaly,warning,level_pct=90 deviates from trend (z=+56.0)
+2026-10-31T05:10:00.000Z,gh-soil-01,config_changed,info,config v4 (rule:tank_lock): {'pump_enabled': 1}
+2026-10-31T05:10:00.000Z,gh-soil-01,pump_unlocked,info,pump unlocked: tank refilled to 90%
+2026-10-31T05:11:00.000Z,gh-tank-01,anomaly,warning,level_pct=90.2 deviates from trend (z=+46.2)
+2026-10-31T05:12:00.000Z,gh-tank-01,anomaly,warning,level_pct=90 deviates from trend (z=+29.9)
+2026-10-31T05:13:00.000Z,gh-tank-01,anomaly,warning,level_pct=90.1 deviates from trend (z=+19.3)
+2026-10-31T05:14:00.000Z,gh-tank-01,anomaly,warning,level_pct=90.1 deviates from trend (z=+12.4)
+2026-10-31T05:15:00.000Z,gh-tank-01,anomaly,warning,level_pct=90.2 deviates from trend (z=+7.8)
+2026-10-31T05:16:00.000Z,gh-tank-01,anomaly,warning,level_pct=90 deviates from trend (z=+4.8)
+2026-10-31T12:30:00.000Z,gh-climate-01,config_changed,info,config v3 (operator): {'mode': 'manual'}
+2026-10-31T13:10:48.000Z,gh-climate-01,heat_alarm,critical,temperature 35.4 C >= 35 C
+2026-10-31T16:04:35.000Z,gh-climate-01,heat_cleared,info,temperature back to 32.5 C
+2026-10-31T17:00:00.000Z,gh-climate-01,config_changed,info,config v4 (operator): {'mode': 'auto'}
+2026-10-31T20:00:22.000Z,gh-climate-01,device_offline,critical,connection lost (lwt)
+2026-10-31T20:12:00.000Z,gh-climate-01,device_online,info,device is back online after 726 s
+2026-10-31T20:12:00.000Z,gh-climate-01,link_restored,info,link restored: buffered=12
+2026-10-31T22:00:22.000Z,gh-soil-01,device_offline,critical,connection lost (lwt)
+2026-10-31T22:04:00.000Z,gh-soil-01,device_online,info,device is back online after 241 s
+2026-10-31T22:04:00.000Z,gh-soil-01,link_restored,info,link restored: buffered=4
+2026-11-01T09:00:07.000Z,gh-soil-01,anomaly,warning,soil_moisture_pct=41 deviates from trend (z=-6.1)
+2026-11-01T09:01:07.000Z,gh-soil-01,anomaly,warning,soil_moisture_pct=41 deviates from trend (z=-4.5)
+2026-11-01T10:59:07.000Z,gh-soil-01,sensor_stuck,warning,soil_moisture_pct did not change for 120 samples (sensor stuck?)
+2026-11-01T12:00:00.000Z,gh-soil-01,config_changed,info,"config v5 (operator): {'moist_low': 35, 'moist_high': 65}"
+2026-11-01T15:00:00.000Z,gh-soil-01,anomaly,warning,soil_moisture_pct=25.8 deviates from trend (z=-9.2)
+2026-11-01T15:00:30.000Z,gh-soil-01,pump_failsafe,warning,"max run time exceeded, pump stopped"
+2026-11-01T15:00:30.000Z,gh-soil-01,irrigation_ineffective,warning,pump ran but soil moisture rose only -0.3 pp (no water / clogged line?)
+2026-11-01T15:01:20.000Z,gh-soil-01,pump_failsafe,warning,"max run time exceeded, pump stopped"
+2026-11-01T15:02:10.000Z,gh-soil-01,pump_failsafe,warning,"max run time exceeded, pump stopped"
+2026-11-01T15:02:10.000Z,gh-soil-01,config_changed,info,config v6 (rule:pump_fault): {'pump_enabled': 0}
+2026-11-01T15:02:10.000Z,gh-soil-01,pump_fault,critical,"3 ineffective irrigations in a row: pump disabled, check water line (operator must re-enable)"
+2026-11-01T17:05:00.000Z,gh-soil-01,config_changed,info,config v7 (operator): {'pump_enabled': 1}
+2026-11-01T17:05:31.000Z,gh-soil-01,pump_failsafe,warning,"max run time exceeded, pump stopped"

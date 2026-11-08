@@ -1,0 +1,30 @@
+CONN	gh-tank-01-ec945ac8	gh-k7q2x9/greenhouse/gh-tank-01/status	1	1	{"v":1,"dev":"gh-tank-01","state":"offline","reason":"lwt"}
+SUB	gh-k7q2x9/greenhouse/gh-tank-01/cmd	1
+SUB	gh-k7q2x9/greenhouse/gh-tank-01/config	1
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/status	1	{"v":1,"dev":"gh-tank-01","type":"tank","fw":"1.0.0","state":"online","boot":3969145544,"up":20,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346119,"type":"sensor_fault","sev":"critical","msg":"HC-SR04: no echo (3 consecutive failures)"}
+STEP	level60	1021
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346119,"type":"sensor_recovered","sev":"info","msg":"HC-SR04 echo restored"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":1,"ts":1793736346119,"up":2020,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":40.0,"level_pct":60.0,"tank_state":0,"sensor_ok":1,"muted":0}}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":2,"ts":1793736346120,"up":7020,"buf":0,"drop":0,"mode":"auto","itv":5000,"rssi":-55,"m":{"distance_cm":40.0,"level_pct":60.0,"tank_state":0,"sensor_ok":1,"muted":0}}
+STEP	low	9021
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346120,"type":"tank_state","sev":"warning","msg":"tank low"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":3,"ts":1793736346120,"up":9520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":85.0,"level_pct":15.0,"tank_state":1,"sensor_ok":1,"muted":0}}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/status	1	{"v":1,"dev":"gh-tank-01","type":"tank","fw":"1.0.0","state":"online","boot":3969145544,"up":10021,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":4,"ts":1793736346120,"up":11520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":85.0,"level_pct":15.0,"tank_state":1,"sensor_ok":1,"muted":0}}
+STATE	alarm_led	1
+STEP	crit	12021
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346120,"type":"tank_state","sev":"critical","msg":"tank critical"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":5,"ts":1793736346120,"up":12520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":95.0,"level_pct":5.0,"tank_state":2,"sensor_ok":1,"muted":0}}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":6,"ts":1793736346120,"up":14520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":95.0,"level_pct":5.0,"tank_state":2,"sensor_ok":1,"muted":0}}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/cmd/ack	0	{"v":1,"dev":"gh-tank-01","cmd_id":"m1","status":"ok","reason":""}
+STEP	sensor_fault	15021
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346120,"type":"sensor_fault","sev":"critical","msg":"HC-SR04: no echo (3 consecutive failures)"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":7,"ts":1793736346120,"up":16520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":-1.0,"level_pct":-1.0,"tank_state":2,"sensor_ok":0,"muted":1}}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":8,"ts":1793736346120,"up":18520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":-1.0,"level_pct":-1.0,"tank_state":2,"sensor_ok":0,"muted":1}}
+STEP	recovered	20021
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/status	1	{"v":1,"dev":"gh-tank-01","type":"tank","fw":"1.0.0","state":"online","boot":3969145544,"up":20021,"rssi":-55,"heap":200000,"buf_n":0,"cfg_ver":0}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346120,"type":"sensor_recovered","sev":"info","msg":"HC-SR04 echo restored"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/event	0	{"v":1,"dev":"gh-tank-01","boot":3969145544,"ts":1793736346120,"type":"tank_state","sev":"info","msg":"tank ok"}
+PUB	gh-k7q2x9/greenhouse/gh-tank-01/telemetry	0	{"v":1,"dev":"gh-tank-01","type":"tank","boot":3969145544,"seq":9,"ts":1793736346120,"up":20520,"buf":0,"drop":0,"mode":"auto","itv":2000,"rssi":-55,"m":{"distance_cm":40.0,"level_pct":60.0,"tank_state":0,"sensor_ok":1,"muted":1}}
+STATE	alarm_led	0

@@ -1,0 +1,91 @@
+# Запуск всей системы:  cp .env.example .env && docker compose up -d --build
+# UI: http://localhost:8000/ui   API: http://localhost:8000/docs   Grafana: http://localhost:3000
+name: smart-greenhouse
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    restart: unless-stopped
+    ports: ["1883:1883"]
+    volumes:
+      - ./infra/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -h 127.0.0.1 -t '$$SYS/broker/uptime' -C 1 -W 3 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  timescaledb:
+    image: timescale/timescaledb:2.17.2-pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: greenhouse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-greenhouse}
+      POSTGRES_DB: greenhouse
+    volumes:
+      - tsdb-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U greenhouse -d greenhouse"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      mosquitto: {condition: service_healthy}
+      timescaledb: {condition: service_healthy}
+    environment:
+      MQTT_HOST: ${MQTT_HOST:-mosquitto}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      TOPIC_ROOT: ${TOPIC_ROOT:-gh-k7q2x9/greenhouse}
+      DATABASE_URL: postgresql://greenhouse:${POSTGRES_PASSWORD:-greenhouse}@timescaledb:5432/greenhouse
+      API_KEY: ${API_KEY:-dev-key-change-me}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+    ports: ["8000:8000"]
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    restart: unless-stopped
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prom-data:/prometheus
+    depends_on: [backend]
+    ports: ["9090:9090"]
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-greenhouse}
+    volumes:
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on: [prometheus, timescaledb]
+    ports: ["3000:3000"]
+
+  # необязательно: виртуальные устройства без Wokwi (профиль sim):  docker compose --profile sim up -d
+  simulator:
+    profiles: ["sim"]
+    build: ./backend
+    working_dir: /srv
+    volumes:
+      - ./simulator:/srv/simulator:ro
+    command: ["python", "-m", "simulator.run_mqtt"]
+    healthcheck: {disable: true}   # образ backend проверяет :8000/health, у симулятора HTTP-сервера нет
+    environment:
+      MQTT_HOST: mosquitto
+      TOPIC_ROOT: ${TOPIC_ROOT:-gh-k7q2x9/greenhouse}
+    depends_on:
+      mosquitto: {condition: service_healthy}
+
+volumes:
+  mosquitto-data:
+  tsdb-data:
+  prom-data:
+  grafana-data:

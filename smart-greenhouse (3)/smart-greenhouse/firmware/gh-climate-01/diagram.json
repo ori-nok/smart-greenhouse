@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "author": "Smart Greenhouse project",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ntc-temperature-sensor",
+      "id": "ntc",
+      "top": -60,
+      "left": 260,
+      "attrs": {
+        "temperature": "24"
+      }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr",
+      "top": 40,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": 150,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledGrow",
+      "top": 260,
+      "left": 270,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 310,
+      "left": 270,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledNet",
+      "top": 260,
+      "left": 340,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 310,
+      "left": 340,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "ntc:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "ntc:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "ntc:OUT",
+      "esp:D35",
+      "green",
+      []
+    ],
+    [
+      "ldr:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "ldr:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "ldr:AO",
+      "esp:D32",
+      "green",
+      []
+    ],
+    [
+      "servo1:V+",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "servo1:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "servo1:PWM",
+      "esp:D13",
+      "orange",
+      []
+    ],
+    [
+      "esp:D25",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "ledGrow:A",
+      "green",
+      []
+    ],
+    [
+      "ledGrow:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D26",
+      "r2:1",
+      "green",
+      []
+    ],
+    [
+      "r2:2",
+      "ledNet:A",
+      "green",
+      []
+    ],
+    [
+      "ledNet:C",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

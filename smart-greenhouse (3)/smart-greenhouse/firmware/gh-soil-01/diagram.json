@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "author": "Smart Greenhouse project",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "soil",
+      "top": -40,
+      "left": 260,
+      "attrs": {
+        "travelLength": "30"
+      }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": 90,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledPump",
+      "top": 200,
+      "left": 270,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 250,
+      "left": 270,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledNet",
+      "top": 200,
+      "left": 340,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 250,
+      "left": 340,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "soil:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "soil:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "soil:SIG",
+      "esp:D34",
+      "green",
+      []
+    ],
+    [
+      "relay1:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "relay1:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "relay1:IN",
+      "esp:D26",
+      "green",
+      []
+    ],
+    [
+      "esp:D25",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "ledPump:A",
+      "green",
+      []
+    ],
+    [
+      "ledPump:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D27",
+      "r2:1",
+      "green",
+      []
+    ],
+    [
+      "r2:2",
+      "ledNet:A",
+      "green",
+      []
+    ],
+    [
+      "ledNet:C",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}
